@@ -1,0 +1,6 @@
+{
+  "name": "VisionGuard — AI-Based Defect Detection System",
+  "description": "End-to-end industrial computer vision defect detection, YOLO localization, and severity scoring system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

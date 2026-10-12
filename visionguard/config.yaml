@@ -1,0 +1,93 @@
+# VisionGuard Configuration File
+# Controls dataset paths, model architectures, detection thresholds, and severity heuristics
+
+project:
+  name: "VisionGuard"
+  version: "1.0.0"
+  description: "End-to-End AI-Based Industrial Defect Detection and Severity Scoring"
+
+# Defect Taxonomy and Class Names
+classes:
+  names:
+    0: "Scratch"
+    1: "Crack"
+    2: "Dent"
+    3: "Stain"
+    4: "Hole"
+    5: "Other Defect"
+  colors:
+    0: [239, 68, 68]     # Red
+    1: [249, 115, 22]    # Orange
+    2: [234, 179, 8]     # Amber
+    3: [59, 130, 246]    # Blue
+    4: [168, 85, 247]    # Purple
+    5: [107, 114, 128]   # Gray
+
+# Dataset Paths and Splits
+dataset:
+  path: "data"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  dataset_yaml: "data/dataset.yaml"
+  train_split: 0.70
+  val_split: 0.15
+  test_split: 0.15
+  random_seed: 42
+  image_extensions: [".jpg", ".jpeg", ".png", ".webp", ".bmp"]
+
+# Model Hyperparameters and Inference
+model:
+  architecture: "yolov8n.pt"  # Nano for fast prototype; can use yolov8s.pt or yolov8m.pt
+  imgsz: 640
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  max_det: 50
+  device: "auto"  # 'auto', 'cuda', or 'cpu'
+
+# Training Hyperparameters
+training:
+  epochs: 50
+  batch_size: 8
+  lr0: 0.01
+  lrf: 0.01
+  momentum: 0.937
+  weight_decay: 0.0005
+  warmup_epochs: 3
+  optimizer: "SGD"  # 'SGD' or 'AdamW'
+  patience: 15       # Early stopping patience
+  save_period: 5
+  output_dir: "models/runs"
+  pretrained_weights: "models/best.pt"
+
+# Severity Scoring Heuristic Formula
+# Severity = (W_area * Area_Percent + W_count * Min(Count * 15, 100) + W_type * Max_Type_Severity)
+# Resulting in an interpretable 0 to 100 score.
+severity:
+  weights:
+    area_weight: 0.45
+    count_weight: 0.25
+    type_weight: 0.30
+  # Class severity hazard multipliers (0 to 100 scale)
+  # Cracks and Holes are structurally catastrophic; Stains/Scratches are surface cosmetic
+  class_hazard:
+    Crack: 95.0
+    Hole: 90.0
+    Dent: 75.0
+    Scratch: 50.0
+    Stain: 40.0
+    "Other Defect": 45.0
+  # Tiers
+  thresholds:
+    low: 19.0       # 0 - 19: Safe / Negligible
+    minor: 49.0     # 20 - 49: Minor Defect
+    moderate: 79.0  # 50 - 79: Moderate Defect
+    critical: 100.0 # 80 - 100: Critical Defect
+
+# Augmentation Pipeline (Albumentations)
+augmentation:
+  horizontal_flip_prob: 0.5
+  vertical_flip_prob: 0.5
+  random_rotate90_prob: 0.5
+  brightness_contrast_prob: 0.3
+  gaussian_noise_prob: 0.2
+  blur_prob: 0.2

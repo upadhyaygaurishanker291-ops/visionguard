@@ -1,0 +1,13 @@
+# Ultralytics YOLOv8 Dataset Configuration
+path: ../data/processed
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: Scratch
+  1: Crack
+  2: Dent
+  3: Stain
+  4: Hole
+  5: Other Defect

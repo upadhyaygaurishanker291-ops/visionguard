@@ -1,0 +1,30 @@
+# VisionGuard - AI-Based Defect Detection System
+# Core requirements for deep learning, computer vision, and deployment
+
+# Deep Learning and YOLO
+ultralytics>=8.1.0
+torch>=2.2.0
+torchvision>=0.17.0
+
+# Computer Vision & Image Processing
+opencv-python-headless>=4.9.0
+pillow>=10.2.0
+albumentations>=1.4.0
+
+# Scientific & Data Handling
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.4.0
+scipy>=1.12.0
+pyyaml>=6.0.1
+
+# Web Application & Visualization
+streamlit>=1.32.0
+matplotlib>=3.8.0
+plotly>=5.19.0
+seaborn>=0.13.0
+
+# Testing & Utilities
+pytest>=8.0.0
+tqdm>=4.66.0
+requests>=2.31.0
